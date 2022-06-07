@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { CreateDocument } from './components/CreateDocument/CreateDocument';
+import { EditDocument } from './components/EditDocument/EditDocument';
 import { Home } from './components/Home/Home';
 import { LoggedIn } from './components/LoggedIn/LoggedIn';
 import { NotFound } from './components/NotFound/NotFound';
@@ -18,6 +19,7 @@ root.render(
                 <Route path="/" element={<Home></Home>}></Route>
                 <Route path="/loggedIn" element={<LoggedIn></LoggedIn>}></Route>
                 <Route path="/createDocument" element={<CreateDocument></CreateDocument>}></Route>
+                <Route path="/editDocument/:userNanoid/:documentId" element={<EditDocument></EditDocument>}></Route>
                 <Route path="/*" element={<NotFound></NotFound>}></Route>
             </Routes>
         </HashRouter>

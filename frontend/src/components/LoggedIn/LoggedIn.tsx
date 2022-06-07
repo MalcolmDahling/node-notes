@@ -9,6 +9,14 @@ export function LoggedIn(){
     const navigate = useNavigate()
 
 
+    interface document{
+        id:number;
+        title:string;
+        description:string;
+        content:string;
+    }
+    
+
 
     const [documents, setDocuments] = useState();
 
@@ -16,10 +24,19 @@ export function LoggedIn(){
 
     useEffect(() => {
 
-        axios.post('http://localhost:3000/documents/retrieve', {userNanoid: LS})
+        axios.post('http://localhost:3000/documents/getAll', {userNanoid: LS})
             .then(res => {
 
-                console.log(res.data);
+                setDocuments(
+                    res.data.map((document:document,) => {
+                        return(
+                            <Link to={"/editDocument/" + LS + "/" + document.id} className="document" key={document.id}>
+                                <h2>{document.title}</h2>
+                                <p>{document.description}</p>
+                            </Link>
+                        )
+                    })
+                );
                 
 
             })
@@ -54,7 +71,7 @@ export function LoggedIn(){
         <main>
             <h1>Welcome!</h1>
 
-            <div>
+            <div className="documentContainer">
                 {documents}
             </div>
 

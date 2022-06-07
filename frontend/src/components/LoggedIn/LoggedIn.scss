@@ -14,13 +14,41 @@ main{
 
 
         .document{
-            flex-basis:48.3%;
+            flex-basis:40%;
+            flex-grow:1;
+            padding:10px;
 
             border-radius:10px;
             color:rgb(0, 132, 255);
             text-decoration:none;
             text-align:center;
             background-color:rgb(50, 50, 50);
+
+            h2{
+                margin:0px;
+            }
+
+
+            .buttonContainer{
+                display:flex;
+                gap:5px;
+
+                .documentButton{
+                    flex-basis:33%;
+                    padding:3px 5px;
+                    margin:0px;
+    
+                    border-radius:5px;
+                    font-size:14px;
+                    background-color: rgb(105, 105, 105);
+                    text-decoration:none;
+                    color:black;
+                }
+
+                .documentButton:hover{
+                    background-color: rgb(129, 129, 129);
+                }
+            } 
         }
     }
 

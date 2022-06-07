@@ -18,7 +18,7 @@ export function LoggedIn(){
     
 
 
-    const [documents, setDocuments] = useState();
+    const [documents, setDocuments] = useState('You have no documents, try creating a new one!');
 
     const LS = JSON.parse(localStorage.getItem('user') || '');
 
@@ -27,16 +27,30 @@ export function LoggedIn(){
         axios.post('http://localhost:3000/documents/getAll', {userNanoid: LS})
             .then(res => {
 
-                setDocuments(
-                    res.data.map((document:document,) => {
-                        return(
-                            <Link to={"/editDocument/" + LS + "/" + document.id} className="document" key={document.id}>
-                                <h2>{document.title}</h2>
-                                <p>{document.description}</p>
-                            </Link>
-                        )
-                    })
-                );
+                if(res.data[0]){
+
+                    setDocuments(
+
+                        res.data.map((document:document,) => {
+
+                            return(
+                                <div className="document" key={document.id}>
+                                    <h2>{document.title}</h2>
+                                    <p>{document.description}</p>
+
+                                    <div className="buttonContainer">
+                                        <Link to={"/viewDocument/" + LS + "/" + document.id} className="documentButton" key={document.id}>View</Link>
+                                        <Link to={"/editDocument/" + LS + "/" + document.id} className="documentButton" key={document.id}>Edit</Link>
+                                        <input type="button" value="Delete" className="documentButton"></input>
+                                    </div>
+                                    
+                                </div>
+                            )
+                        })
+                    );
+                }
+
+                
                 
 
             })

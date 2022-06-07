@@ -9,7 +9,8 @@ import './EditDocument.scss';
 
 export function EditDocument(){
 
-    interface document{
+    interface IDocument{
+        id:number;
         title:string;
         description:string;
         content:string;
@@ -20,10 +21,11 @@ export function EditDocument(){
 
     const navigate = useNavigate()
     
-    const [saved, setSaved] = useState<any>();
+    const [saved, setSaved] = useState<any>('');
 
     const [post, setPost] = useState({
-        userNanoid:{userNanoid},
+        id:0,
+        userNanoid:userNanoid,
         title:'',
         description:'',
         content:''
@@ -32,20 +34,22 @@ export function EditDocument(){
 
 
 
+    
+
     useEffect(() => {
 
-        axios.post<document>('http://localhost:3000/documents/getOne', {userNanoid: {userNanoid}, documentId: {documentId}})
+        axios.post<IDocument[]>('http://localhost:3000/documents/getOne', {userNanoid: userNanoid, documentId: documentId})
             .then(res => {
 
                 setPost({...post,
-                    title: res.data.title,
-                    description: res.data.description,
-                    content: res.data.content
+                    id: res.data[0].id,
+                    title: res.data[0].title,
+                    description: res.data[0].description,
+                    content: res.data[0].content
                 });
 
             })
             .catch(err => console.error(err));
-
 
     }, []);
 
@@ -70,12 +74,37 @@ export function EditDocument(){
 
     function save(){
 
+        axios.post('http://localhost:3000/documents/update', post)
+            .then()
+            .catch(err => console.error(err));
+          
+            
+        setSaved(
+            <div className="saved">
+                <h2>Document saved</h2>
+            </div>
+        );
+
+        setTimeout(() => {
+            setSaved('');
+        }, 2000);
     }
+
+
+
+
+
+
 
 
     function goBack(){
         navigate('/loggedIn');
     }
+
+
+
+
+
 
 
     return(
@@ -95,15 +124,15 @@ export function EditDocument(){
                 <Editor
                     id='textEditor'
                     onInit={(evt, editor) => editorRef.current = editor}
-                    initialValue=""
+                    value={post.content}
                     init={{
                     height: 500,
                     menubar: false,
-                    plugins: [
-                        'advlist autolink lists link image charmap print preview anchor',
-                        'searchreplace visualblocks code fullscreen',
-                        'insertdatetime media table paste code help wordcount'
-                    ],
+                    // plugins: [
+                    //     'advlist autolink lists link image charmap print preview anchor',
+                    //     'searchreplace visualblocks code fullscreen',
+                    //     'insertdatetime media table paste code help wordcount'
+                    // ],
                     toolbar: 'undo redo | formatselect | ' +
                     'bold italic backcolor | alignleft aligncenter ' +
                     'alignright alignjustify | bullist numlist outdent indent | ' +

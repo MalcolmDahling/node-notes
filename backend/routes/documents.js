@@ -56,19 +56,41 @@ router.post('/getOne', function(req, res){
         if(err){console.log(err);}
 
         let sql = `
-            SELECT title, description, content
+            SELECT id, title, description, content
             FROM documents
             WHERE userNanoid = '${req.body.userNanoid}' AND id = '${req.body.documentId}'
         `;
 
         req.app.locals.con.query(sql, function(err, result){
             if(err){console.log(err);}
-
+            
             res.send(result);
         });
 
     });
 
+});
+
+
+router.post('/update', function(req, res){
+
+    req.app.locals.con.connect((err) => {
+
+        if(err){console.log(err);}
+
+        let sql = `
+            UPDATE documents
+            SET title = '${req.body.title}', description = '${req.body.description}', content = '${req.body.content}'
+            WHERE id = '${req.body.id}' AND userNanoid = '${req.body.userNanoid}'
+        `;
+
+        req.app.locals.con.query(sql, function(err, result){
+            if(err){console.log(err);}
+
+            res.send('OK');
+        });
+
+    })
 });
 
 

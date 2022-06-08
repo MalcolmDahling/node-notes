@@ -5,21 +5,15 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { IDocument } from '../../models/IDocument';
 import './EditDocument.scss';
 
 export function EditDocument(){
 
-    interface IDocument{
-        id:number;
-        title:string;
-        description:string;
-        content:string;
-    }
-
     let {userNanoid} = useParams();
     let {documentId} = useParams();
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     
     const [saved, setSaved] = useState<any>('');
 
@@ -38,8 +32,8 @@ export function EditDocument(){
 
     useEffect(() => {
 
-        axios.post<IDocument[]>('http://localhost:3000/documents/getOne', {userNanoid: userNanoid, documentId: documentId})
-            .then(res => {
+        axios.post<IDocument[]>('http://localhost:3000/documents/getOne', {userNanoid: userNanoid, id: documentId})
+            .then(res => {     
 
                 setPost({...post,
                     id: res.data[0].id,
@@ -73,21 +67,25 @@ export function EditDocument(){
 
 
     function save(){
-
         axios.post('http://localhost:3000/documents/update', post)
-            .then()
-            .catch(err => console.error(err));
-          
-            
-        setSaved(
-            <div className="saved">
-                <h2>Document saved</h2>
-            </div>
-        );
+            .then(res => {
 
-        setTimeout(() => {
-            setSaved('');
-        }, 2000);
+                if(res.data == 'OK'){
+
+                    setSaved(
+                        <div className="saved">
+                            <h2>Document saved</h2>
+                        </div>
+                    );
+            
+                    setTimeout(() => {
+                        setSaved('');
+                    }, 2000);
+                }
+                
+
+            })
+            .catch(err => console.error(err));   
     }
 
 
@@ -116,10 +114,10 @@ export function EditDocument(){
                 <h1>Edit Document</h1>
 
                 <label htmlFor="title">Title</label>
-                <input type="text" name="title" placeholder="Title" value={post.title} onChange={handleChange}></input>
+                <input type="text" name="title" placeholder="Title" maxLength={32} value={post.title} onChange={handleChange}></input>
                 
                 <label htmlFor="desciption">Description</label>
-                <input type="text" name="description" placeholder="Description" value={post.description} onChange={handleChange}></input>
+                <input type="text" name="description" placeholder="Description" maxLength={64} value={post.description} onChange={handleChange}></input>
 
                 <Editor
                     id='textEditor'

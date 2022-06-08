@@ -6,11 +6,3 @@ Content-Type: application/json
     "password": "admin"
 }
 
-###
-
-POST http://localhost:3000/documents/GET
-Content-Type: application/json
-
-{
-    "userNanoid": "M7INa8cmx1WP8Cc03H9RN"
-}

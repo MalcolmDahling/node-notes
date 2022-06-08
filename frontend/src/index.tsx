@@ -6,6 +6,7 @@ import { EditDocument } from './components/EditDocument/EditDocument';
 import { Home } from './components/Home/Home';
 import { LoggedIn } from './components/LoggedIn/LoggedIn';
 import { NotFound } from './components/NotFound/NotFound';
+import { ViewDocument } from './components/ViewDocument/ViewDocument';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
 
@@ -20,6 +21,7 @@ root.render(
                 <Route path="/loggedIn" element={<LoggedIn></LoggedIn>}></Route>
                 <Route path="/createDocument" element={<CreateDocument></CreateDocument>}></Route>
                 <Route path="/editDocument/:userNanoid/:documentId" element={<EditDocument></EditDocument>}></Route>
+                <Route path="/viewDocument/:userNanoid/:documentId" element={<ViewDocument></ViewDocument>}></Route>
                 <Route path="/*" element={<NotFound></NotFound>}></Route>
             </Routes>
         </HashRouter>

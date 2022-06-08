@@ -9,7 +9,7 @@ export function LoggedIn(){
     const navigate = useNavigate()
 
 
-    interface document{
+    interface IDocument{
         id:number;
         title:string;
         description:string;
@@ -18,11 +18,17 @@ export function LoggedIn(){
     
 
 
-    const [documents, setDocuments] = useState('You have no documents, try creating a new one!');
+    const [documents, setDocuments] = useState<any>('You have no documents, try creating a new one!');
 
     const LS = JSON.parse(localStorage.getItem('user') || '');
 
     useEffect(() => {
+        getAll();
+    }, []);
+
+
+
+    function getAll(){
 
         axios.post('http://localhost:3000/documents/getAll', {userNanoid: LS})
             .then(res => {
@@ -31,7 +37,7 @@ export function LoggedIn(){
 
                     setDocuments(
 
-                        res.data.map((document:document,) => {
+                        res.data.map((document:IDocument, i:number) => {
 
                             return(
                                 <div className="document" key={document.id}>
@@ -39,9 +45,9 @@ export function LoggedIn(){
                                     <p>{document.description}</p>
 
                                     <div className="buttonContainer">
-                                        <Link to={"/viewDocument/" + LS + "/" + document.id} className="documentButton" key={document.id}>View</Link>
-                                        <Link to={"/editDocument/" + LS + "/" + document.id} className="documentButton" key={document.id}>Edit</Link>
-                                        <input type="button" value="Delete" className="documentButton"></input>
+                                        <Link to={"/viewDocument/" + LS + "/" + document.id} className="documentButton">View</Link>
+                                        <Link to={"/editDocument/" + LS + "/" + document.id} className="documentButton">Edit</Link>
+                                        <input type="button" value="Delete" className="documentButton" id={document.id.toString()} onClick={deleteDocument}></input>
                                     </div>
                                     
                                 </div>
@@ -50,22 +56,31 @@ export function LoggedIn(){
                     );
                 }
 
-                
+                else{
+                    setDocuments('You have no documents, try creating a new one!');
+                }
                 
 
             })
             .catch(err => {
                 console.error(err); 
             });
-
-    }, [])
-
+    }
 
 
 
 
+    function deleteDocument(e:any){
 
+        axios.post('http://localhost:3000/documents/delete', {userNanoid:LS, id:e.target.id})
+            .then(res => {
 
+                if(res.data == 'OK'){
+                    getAll();
+                }
+            })
+            .catch(err => console.error(err));
+    }
 
 
 

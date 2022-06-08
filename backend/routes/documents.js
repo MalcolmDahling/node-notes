@@ -58,7 +58,7 @@ router.post('/getOne', function(req, res){
         let sql = `
             SELECT id, title, description, content
             FROM documents
-            WHERE userNanoid = '${req.body.userNanoid}' AND id = '${req.body.documentId}'
+            WHERE userNanoid = '${req.body.userNanoid}' AND id = '${req.body.id}'
         `;
 
         req.app.locals.con.query(sql, function(err, result){
@@ -91,6 +91,26 @@ router.post('/update', function(req, res){
         });
 
     })
+});
+
+
+router.post('/delete', function(req, res){
+
+    req.app.locals.con.connect((err) => {
+
+        let sql = `
+            DELETE FROM documents
+            WHERE id = '${req.body.id}' AND userNanoid = '${req.body.userNanoid}'
+        `;
+
+        req.app.locals.con.query(sql, function(err, result){
+            if(err){console.log(err);}
+
+            res.send('OK');
+        });
+
+    });
+
 });
 
 

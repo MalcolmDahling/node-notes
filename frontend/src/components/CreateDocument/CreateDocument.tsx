@@ -12,7 +12,7 @@ export function CreateDocument(){
 
     const [saved, setSaved] = useState<any>();
 
-    const [post, setPost] = useState({
+    const [post, setPost] = useState<any>({
         userNanoid:localStorage.getItem('user'),
         title:'',
         description:'',
@@ -79,15 +79,15 @@ export function CreateDocument(){
                 <h1>Create Document</h1>
 
                 <label htmlFor="title">Title</label>
-                <input type="text" name="title" placeholder="Title" value={post.title} onChange={handleChange}></input>
+                <input type="text" name="title" placeholder="Title" maxLength={32} value={post.title} onChange={handleChange}></input>
                 
                 <label htmlFor="desciption">Description</label>
-                <input type="text" name="description" placeholder="Description" value={post.description} onChange={handleChange}></input>
+                <input type="text" name="description" placeholder="Description" maxLength={64} value={post.description} onChange={handleChange}></input>
 
                 <Editor
                     id='textEditor'
                     onInit={(evt, editor) => editorRef.current = editor}
-                    value=""
+                    initialValue=""
                     init={{
                     height: 500,
                     menubar: false,

@@ -1,5 +1,6 @@
 <h2>Notes</h2>
 Frontend created with Create-React-App and Typescript
+<br>
 Backend created with Express-Generator
 <br>
 
